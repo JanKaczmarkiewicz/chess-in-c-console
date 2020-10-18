@@ -27,16 +27,16 @@ enum Direction {
 };
 
 
-struct Chessman{
+struct Chessman {
     enum ChessmanType type;
     enum Side side;
 };
 
 
-struct Chessman cc(enum Side side, enum ChessmanType chessmanType){
+struct Chessman cc(enum Side side, enum ChessmanType chessmanType) {
     struct Chessman chessman;
-    chessman.side=side;
-    chessman.type=chessmanType;
+    chessman.side = side;
+    chessman.type = chessmanType;
     return chessman;
 }
 

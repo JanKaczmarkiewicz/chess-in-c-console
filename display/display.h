@@ -1,7 +1,3 @@
-//
-// Created by Jan Kaczmarkiewicz on 18/10/2020.
-//
-
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
@@ -14,9 +10,9 @@
 #define WHITE_SUBROW "\033[3;40;10m   %s   \033[0m"
 #define BLACK_SUBROW "   %s   "
 
-const short int NUMBER_OF_SUBROWS= 3;
+const short int NUMBER_OF_SUBROWS = 3;
 
-char* get_chessman_code(struct Chessman* chessman){
+char *get_chessman_code(struct Chessman *chessman) {
     switch (chessman->side) {
         case WHITE:
             switch (chessman->type) {
@@ -54,19 +50,17 @@ char* get_chessman_code(struct Chessman* chessman){
 
 }
 
-char* get_tile_code (bool is_white) {
+char *get_tile_code(bool is_white) {
     return is_white ? WHITE_SUBROW : BLACK_SUBROW;
 }
 
-void print_board(struct Chessman **board[BOARD_SIZE][BOARD_SIZE]){
-    for (short int t_i = 0; t_i < BOARD_SIZE * NUMBER_OF_SUBROWS; t_i++){
+void print_board(struct Chessman **board[BOARD_SIZE][BOARD_SIZE]) {
+    for (short int t_i = 0; t_i < BOARD_SIZE * NUMBER_OF_SUBROWS; t_i++) {
         int i = floor(t_i / NUMBER_OF_SUBROWS);
-        for (short int j = 0; j < BOARD_SIZE; j++){
-            bool is_white_tile  = (i-j) % 2 == 0;
-
+        for (short int j = 0; j < BOARD_SIZE; j++) {
+            bool is_white_tile = (i - j) % 2 == 0;
             bool is_subtile_with_chessman = !(board[i][j] == NULL) && (t_i % NUMBER_OF_SUBROWS == 1);
-
-            char* content = is_subtile_with_chessman ? get_chessman_code(&(board[i][j])) : " ";
+            char *content = is_subtile_with_chessman ? get_chessman_code(&(board[i][j])) : " ";
 
             printf(get_tile_code(is_white_tile), content);
         }
