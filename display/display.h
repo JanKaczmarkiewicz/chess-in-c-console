@@ -28,6 +28,8 @@ char *get_chessman_code(struct Chessman *chessman) {
                     return "\u2656";
                 case BISHOP:
                     return "\u2657";
+                default:
+                    return "WHITE ERROR";
             }
 
         case BLACK:
@@ -44,8 +46,12 @@ char *get_chessman_code(struct Chessman *chessman) {
                     return "\u265C";
                 case BISHOP:
                     return "\u265D";
+
+                default:
+                    return "BLACK ERROR";
             }
-            return "";
+        case NONE:
+            return " ";
     }
 
 }
@@ -54,13 +60,16 @@ char *get_tile_code(bool is_white) {
     return is_white ? WHITE_SUBROW : BLACK_SUBROW;
 }
 
-void print_board(struct Chessman **board[BOARD_SIZE][BOARD_SIZE]) {
-    for (short int t_i = 0; t_i < BOARD_SIZE * NUMBER_OF_SUBROWS; t_i++) {
-        int i = floor(t_i / NUMBER_OF_SUBROWS);
-        for (short int j = 0; j < BOARD_SIZE; j++) {
-            bool is_white_tile = (i - j) % 2 == 0;
-            bool is_subtile_with_chessman = !(board[i][j] == NULL) && (t_i % NUMBER_OF_SUBROWS == 1);
-            char *content = is_subtile_with_chessman ? get_chessman_code(&(board[i][j])) : " ";
+void print_board(struct State *state) {
+    for (short int subrow = 0; subrow < BOARD_SIZE * NUMBER_OF_SUBROWS; subrow++) {
+        int row = floor(subrow / NUMBER_OF_SUBROWS);
+        for (short int column = 0; column < BOARD_SIZE; column++) {
+
+            bool is_white_tile = (column - row) % 2 == 0;
+            bool is_subtile_with_object = subrow % NUMBER_OF_SUBROWS == 1;
+
+            struct Chessman* currentChessman = &(state->board[row][column]);
+            char *content = is_subtile_with_object ? get_chessman_code(currentChessman) : " ";
 
             printf(get_tile_code(is_white_tile), content);
         }
