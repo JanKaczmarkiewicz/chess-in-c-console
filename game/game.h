@@ -1,59 +1,29 @@
 #include <stdbool.h>
 #include <stdlib.h>
+#include "definitions.h"
+#include "../helpers/helpers.h"
 
 #ifndef GAME_H
 #define GAME_H
 
-const short int BOARD_SIZE = 8;
-
-enum ChessmanType {
-    KING,
-    QUEEN,
-    PAWN,
-    CASTLE,
-    KNIGHT,
-    BISHOP,
-    EMPTY,
-};
-
-enum Side {
-    WHITE,
-    BLACK,
-    NONE,
-};
-
-enum Direction {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
-};
-
-struct Chessman {
-    enum ChessmanType type;
-    enum Side side;
-};
-
-struct Chessman cc(enum Side side, enum ChessmanType chessman_type) {
-    struct Chessman chessman = {
-            .side=side,
-            .type=chessman_type,
-    };
+struct Chessman *cc(enum Side side, enum ChessmanType chessman_type) {
+    struct Chessman *chessman = malloc(sizeof(struct Chessman));
+    chessman->type = chessman_type;
+    chessman->side = side;
     return chessman;
 }
 
+void select_tile(struct State *state, short int x, short int y) {
+    if (is_tile_not_exists(x, y)) return;
+    if (is_tile_empty(state->board[y][x])) return;
+    if (state->board[y][x]->side != state->current_side) return;
 
-struct State {
-    enum Side current_turn;
-    int selected_tile[2];
-    struct Chessman board[BOARD_SIZE+1][BOARD_SIZE+1];
-};
+    free(state->selected_tile);
 
-void select_tile(struct State *state, int x, int y) {
-    if(&state->board[x][y].side != &state->current_turn) return;
-
-    state->selected_tile[0] = x;
-    state->selected_tile[1] = y;
+    struct Coordinates *selected_tile = malloc(sizeof(struct Coordinates)+1);
+    state->selected_tile = selected_tile;
+    state->selected_tile->x = x;
+    state->selected_tile->y = y;
 }
 
 

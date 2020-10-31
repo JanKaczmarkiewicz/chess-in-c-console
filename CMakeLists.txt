@@ -3,4 +3,4 @@ project(hello C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(hello main.c display/display.h game/game.h)
+add_executable(hello main.c display/display.h game/game.h helpers/helpers.h game/definitions.h)
