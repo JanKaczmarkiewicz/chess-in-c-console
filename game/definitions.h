@@ -47,25 +47,4 @@ struct State {
     struct Chessman *board[BOARD_SIZE][BOARD_SIZE];
 };
 
-const short QUEEN_DIRECTIONS_NUMBER = 8;
-enum Direction QUEEN_DIRECTIONS[QUEEN_DIRECTIONS_NUMBER] = {UP, DOWN, LEFT, RIGHT, UP_RIGHT, UP_LEFT, DOWN_LEFT,
-                                                            DOWN_RIGHT};
-
-const short CASTLE_DIRECTIONS_NUMBER = 4;
-enum Direction CASTLE_DIRECTIONS[CASTLE_DIRECTIONS_NUMBER] = {UP, DOWN, LEFT, RIGHT};
-
-const short BISHOP_DIRECTIONS_NUMBER = 4;
-enum Direction BISHOP_DIRECTIONS[BISHOP_DIRECTIONS_NUMBER] = {UP_RIGHT, UP_LEFT, DOWN_LEFT, DOWN_RIGHT};
-
-const short KNIGHT_MOVES_MODIFICATORS_NUMBER = 8;
-struct Coordinates KNIGHT_MOVES_MODIFICATORS[KNIGHT_MOVES_MODIFICATORS_NUMBER] = {
-        {-2, -1},
-        {-2, 1},
-        {-1, 2},
-        {1, 2},
-        {2, 1},
-        {2, -1},
-        {1, -2},
-        {-1, -2},
-};
 #endif //DEFINITIONS_H
