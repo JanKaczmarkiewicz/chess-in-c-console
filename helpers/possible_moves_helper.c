@@ -1,6 +1,4 @@
 #include "possible_moves_helper.h"
-#include "direction_helper.h"
-#include "../State/State.h"
 
 #include "../chessman/chessmans/bishop.h"
 #include "../chessman/chessmans/castle.h"
