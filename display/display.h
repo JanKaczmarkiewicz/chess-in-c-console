@@ -7,51 +7,6 @@
 
 #include "../game/game.h"
 
-#define PRIMARY_SUBROW "\033[3;40;10m   %s   \033[0m"
-#define SECONDARY_SUBROW "   %s   "
-#define SELECTED_SUBROW "\033[3;46;35m   %s   \033[0m"
-#define ALLOWED_SUBROW "\033[3;42;35m   %s   \033[0m"
-#define CAPTURE_SUBROW "\033[3;41;35m   %s   \033[0m"
-
-const short NUMBER_OF_SUBROWS = 3;
-
-char *get_chessman_code(struct Chessman *chessman) {
-    switch (chessman->side) {
-        case WHITE:
-            switch (chessman->type) {
-                case KING:
-                    return "\u2654";
-                case QUEEN:
-                    return "\u2655";
-                case PAWN:
-                    return "\u2659";
-                case KNIGHT:
-                    return "\u2658";
-                case CASTLE:
-                    return "\u2656";
-                case BISHOP:
-                    return "\u2657";
-            }
-
-        case BLACK:
-            switch (chessman->type) {
-                case KING:
-                    return "\u265A";
-                case QUEEN:
-                    return "\u265B";
-                case PAWN:
-                    return "\u265F";
-                case KNIGHT:
-                    return "\u265E";
-                case CASTLE:
-                    return "\u265C";
-                case BISHOP:
-                    return "\u265D";
-            }
-    }
-}
-
-
 char *
 get_tile_code(bool is_selected_tile, bool is_prime_tile, bool is_possible_move_tile, bool is_possible_capture_tile) {
     if (is_possible_capture_tile)
@@ -68,9 +23,6 @@ get_tile_code(bool is_selected_tile, bool is_prime_tile, bool is_possible_move_t
 
 void print_board(struct State *state) {
     bool is_any_tile_is_selected = check_if_any_tile_is_selected(state);
-    struct Coordinates **s = is_any_tile_is_selected
-                             ? get_possible_moves(state, state->selected_tile->x, state->selected_tile->y)
-                             : NULL;
 
     for (short subrow = 0; subrow < BOARD_SIZE * NUMBER_OF_SUBROWS; subrow++) {
         short row = floor(subrow / NUMBER_OF_SUBROWS);

@@ -1,28 +1,25 @@
 #include "game/game.h"
+#include <stdlib.h>
 #include "display/display.h"
+#include "helpers/user_input_helper.h"
 
+#include "State/State.h"
 
 int main() {
-    struct State state = {
-            .current_side = WHITE,
-            .selected_tile = NULL,
-            .board = {
-                    //@formatter:off
-                    {cc(BLACK, CASTLE), cc(BLACK, KNIGHT), cc(BLACK, BISHOP), cc(BLACK, KING), cc(BLACK, QUEEN), cc(BLACK,BISHOP), cc(BLACK, KNIGHT), cc(BLACK, CASTLE)},
-                    {cc(BLACK, PAWN),   cc(BLACK, PAWN),   cc(BLACK, PAWN),   cc(BLACK, PAWN), cc(BLACK, PAWN),  cc(BLACK,PAWN),   cc(BLACK, PAWN),   cc(BLACK, PAWN)},
-                    {NULL,   NULL,   NULL,   cc(WHITE, PAWN), NULL,  NULL,  NULL,   NULL},
-                    {NULL,   NULL,   NULL,   NULL,NULL,NULL,NULL,NULL},
-                    {NULL,   NULL,   NULL,   NULL,NULL,NULL,NULL,NULL},
-                    {NULL,   NULL,   NULL,   cc(WHITE, PAWN),NULL,NULL,NULL,NULL},
-                    {cc(WHITE, PAWN),   cc(WHITE, PAWN),   cc(WHITE, PAWN),   cc(WHITE, PAWN), cc(WHITE, PAWN),  cc(WHITE,PAWN),   cc(WHITE, PAWN),   cc(WHITE, PAWN),},
-                    {cc(WHITE, CASTLE), cc(WHITE, KNIGHT), cc(WHITE, BISHOP), cc(WHITE, KING), cc(WHITE, QUEEN), cc(WHITE,BISHOP), cc(WHITE, KNIGHT), cc(WHITE, CASTLE)}
-                    //@formatter:on
-            }
-    };
+    State state = State_value_initial();
 
 
-    select_tile(&state, 4, 6);
+    while (true){
+        State_print_board(&state);
 
-    print_board(&state);
+        Coordinates *user_move = get_user_move(state.current_side);
+
+        if(user_move == NULL) continue;
+
+        State_perform_action(&state, user_move);
+
+        free(user_move);
+    }
+
     return 0;
 }

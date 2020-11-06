@@ -36,15 +36,4 @@ struct Coordinates {
     short y;
 };
 
-struct Chessman {
-    enum ChessmanType type;
-    enum Side side;
-};
-
-struct State {
-    enum Side current_side;
-    struct Coordinates *selected_tile;
-    struct Chessman *board[BOARD_SIZE][BOARD_SIZE];
-};
-
 #endif //DEFINITIONS_H
