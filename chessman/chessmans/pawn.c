@@ -7,7 +7,7 @@ const short PAWN_CAPTURE_DIRECTIONS_NUMBER = 2;
 
 void assign_pawn_possible_moves(State *state, Coordinates *coordinates, Coordinates **possible_moves,
                                 short *current_index) {
-    enum Side pawn_side = State_get_tile(state, coordinates)->side;
+    Side pawn_side = State_get_tile(state, coordinates)->side;
 
     bool is_pawn_white = pawn_side == WHITE;
 

@@ -1,10 +1,7 @@
 #include <stdbool.h>
-#include "stdlib.h"
 #include "../Coordinates/Coordinates.h"
-#include "../chessman/Chessman.h"
 #include "../State/State.h"
 #include "direction_helper.h"
-
 
 #ifndef POSSIBLE_MOVES_HELPER_H
 #define POSSIBLE_MOVES_HELPER_H
@@ -18,6 +15,6 @@ void assign_direction_moves(State *state, Coordinates *coordinates, Coordinates 
 
 Coordinates **get_possible_moves(State *state, Coordinates *coordinates);
 
-bool is_in_possible_moves(Coordinates **possible_moves, Coordinates coordinates);
+bool is_in_possible_moves(Coordinates **possible_moves, Coordinates *coordinates);
 
 #endif //POSSIBLE_MOVES_HELPER_H

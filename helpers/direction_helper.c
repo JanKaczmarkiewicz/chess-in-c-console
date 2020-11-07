@@ -1,6 +1,6 @@
 #include "direction_helper.h"
 
-short get_direction_next_x_modificator(enum Direction direction) {
+short get_direction_next_x_modificator(Direction direction) {
     switch (direction) {
         case UP:
         case DOWN:
@@ -16,7 +16,7 @@ short get_direction_next_x_modificator(enum Direction direction) {
     }
 }
 
-short get_direction_next_y_modificator(enum Direction direction) {
+short get_direction_next_y_modificator(Direction direction) {
     switch (direction) {
         case UP_LEFT:
         case UP_RIGHT:

@@ -1,5 +1,5 @@
-#include "Coordinates/Coordinates.h"
-#include "State/State.h"
+#include "../Coordinates/Coordinates.h"
+#include "../State/State.h"
 
 short translate_first_move_character(char c) {
     switch (c) {
@@ -47,7 +47,7 @@ short translate_second_move_character(char c) {
     }
 }
 
-Coordinates *get_user_move(enum Side side) {
+Coordinates *get_user_move(Side side) {
     char input[2];
     printf("Please select %s chessman by command [a-g][1-8]:", side == WHITE ? "white" : "black");
 

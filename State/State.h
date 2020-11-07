@@ -1,18 +1,39 @@
-
 #ifndef STATE_H
 #define STATE_H
 
+#include <stdio.h>
+#include <math.h>
+#include <stdbool.h>
+#include <string.h>
+#include <stdlib.h>
 #include "../constants.h"
-#include "../chessman/Chessman.h"
 #include "../Coordinates/Coordinates.h"
 
-enum Side {
+typedef enum{
     WHITE,
     BLACK,
-};
+} Side;
+
+typedef enum {
+    KING,
+    QUEEN,
+    PAWN,
+    CASTLE,
+    KNIGHT,
+    BISHOP,
+} ChessmanType;
+
+typedef struct Chessman {
+    ChessmanType type;
+    Side side;
+} Chessman;
+
+Chessman *Chessman_p(Side side, ChessmanType type);
+
+char *Chessman_character(Chessman *self);
 
 typedef struct {
-    enum Side current_side;
+    Side current_side;
     Coordinates *selected_tile;
     Chessman *board[BOARD_SIZE][BOARD_SIZE];
 } State;
@@ -25,10 +46,8 @@ void State_print_board(State *self);
 
 bool State_is_tile_empty(State *self, Coordinates *coordinates);
 
+bool State_is_possible_move(State *self, Coordinates *coordinates, Side chessman_side);
+
 Chessman *State_get_tile(State *self, Coordinates *coordinates);
-
-bool State_is_possible_move(State *self, Coordinates *coordinates, enum Side chessman_side);
-
-
 
 #endif

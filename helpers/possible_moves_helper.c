@@ -6,13 +6,20 @@
 #include "../chessman/chessmans/pawn.h"
 #include "../chessman/chessmans/queen.h"
 
-
 void free_possible_moves(Coordinates **possible_moves) {
     if (possible_moves == NULL) return;
     for (int i = 0; i < MAX_MOVES_NUMBER; ++i) {
         free(possible_moves[i]);
     }
     free(possible_moves);
+}
+bool is_in_possible_moves(Coordinates **possible_moves, Coordinates *coordinates){
+    if(possible_moves==NULL) return false;
+    for (int i = 0; i < MAX_MOVES_NUMBER; ++i) {
+        if (possible_moves[i]==NULL) return false;
+        if(coordinates->x == possible_moves[i]->x && coordinates->y == possible_moves[i]->y) return true;
+    }
+    return false;
 }
 
 void assign_end_to_possible_moves(Coordinates **possible_moves,short *index){
@@ -21,7 +28,7 @@ void assign_end_to_possible_moves(Coordinates **possible_moves,short *index){
 
 void assign_direction_moves(State *state, Coordinates *coordinates, Coordinates **possible_moves, short *current_index,
                             Direction direction) {
-    enum Side chessman_side = State_get_tile(coordinates);
+    Side chessman_side = State_get_tile(state, coordinates)->side;
 
     for (short i = 1; i < BOARD_SIZE; ++i) {
         Coordinates *current = Coordinates_p(
@@ -42,7 +49,7 @@ Coordinates **get_possible_moves(State *state, Coordinates *coordinates) {
     if (State_is_tile_empty(state, coordinates)) return NULL;
 
     short current_index = 0;
-    Coordinates **possible_moves = malloc(MAX_MOVES_NUMBER * sizeof(struct Coordinates *));
+    Coordinates **possible_moves = malloc(MAX_MOVES_NUMBER * sizeof(Coordinates *));
 
     switch (State_get_tile(state, coordinates)->type) {
         case KING:
