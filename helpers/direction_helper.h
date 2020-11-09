@@ -2,6 +2,7 @@
 
 #ifndef DIRECTION_HELPER_H
 #define DIRECTION_HELPER_H
+
 typedef enum {
     UP,
     DOWN,

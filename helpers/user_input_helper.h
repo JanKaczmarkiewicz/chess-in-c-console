@@ -1,3 +1,6 @@
+#ifndef USER_INPUT_HELPER_H
+#define USER_INPUT_HELPER_H
+
 #include "../Coordinates/Coordinates.h"
 #include "../State/State.h"
 
@@ -61,8 +64,9 @@ Coordinates *get_user_move(Side side) {
         return NULL;
     }
 
-    free(input);
-
     return Coordinates_p(x, y);
 }
+
+#endif //USER_INPUT_HELPER_H
+
 

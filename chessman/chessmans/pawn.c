@@ -19,40 +19,44 @@ void assign_pawn_possible_moves(State *state, Coordinates *coordinates, Coordina
 
     //capture possible moves
     for (int i = 0; i < PAWN_CAPTURE_DIRECTIONS_NUMBER; i++) {
-        short capture_coordinate_y = coordinates->y + get_direction_next_y_modificator(pawn_capture_directions[i]);
-        short capture_coordinate_x = coordinates->x + get_direction_next_x_modificator(pawn_capture_directions[i]);
 
-        if (State_is_tile_empty(state, coordinates) ||
-            state->board[capture_coordinate_y][capture_coordinate_x]->side == pawn_side)
-            break;
-
-        possible_moves[*current_index++] = Coordinates_p(
-                capture_coordinate_x,
-                capture_coordinate_y
+        Coordinates *capture_move = Coordinates_p(
+                coordinates->y + get_direction_next_y_modificator(pawn_capture_directions[i]),
+                coordinates->x + get_direction_next_x_modificator(pawn_capture_directions[i])
         );
+
+        if (!is_tile_exist(capture_move) || State_is_tile_empty(state, capture_move) ||
+            State_get_tile(state, capture_move)->side == pawn_side){
+            free(capture_move);
+            continue;
+        }
+
+        assign_possible_move(possible_moves, capture_move, current_index);
     }
 
     //first possible move
-    short first_move_coordinate_x = coordinates->x + get_direction_next_x_modificator(pawn_direction);
-    short first_move_coordinate_y = coordinates->y + get_direction_next_y_modificator(pawn_direction);
-
-    if (!State_is_tile_empty(state, coordinates))
-        return;
-
-    possible_moves[*current_index++] = Coordinates_p(
-            first_move_coordinate_x,
-            first_move_coordinate_y
+    Coordinates *first_move = Coordinates_p(
+            coordinates->x + get_direction_next_x_modificator(pawn_direction),
+            coordinates->y + get_direction_next_y_modificator(pawn_direction)
     );
+
+    if (!is_tile_exist(first_move) || !State_is_tile_empty(state, first_move)) {
+        free(first_move);
+        return;
+    }
+
+    assign_possible_move(possible_moves, first_move, current_index);
 
     //second possible move
-    short second_move_coordinate_x = coordinates->x + 2 * get_direction_next_x_modificator(pawn_direction);
-    short second_move_coordinate_y = coordinates->y + 2 * get_direction_next_y_modificator(pawn_direction);
-
-    if (special_row != coordinates->y || !State_is_tile_empty(state, coordinates))
-        return;
-
-    possible_moves[*current_index++] = Coordinates_p(
-            second_move_coordinate_x,
-            second_move_coordinate_y
+    Coordinates *second_move = Coordinates_p(
+            coordinates->x + 2 * get_direction_next_x_modificator(pawn_direction),
+            coordinates->y + 2 * get_direction_next_y_modificator(pawn_direction)
     );
+
+    if (!is_tile_exist(second_move) || special_row != coordinates->y || !State_is_tile_empty(state, second_move)) {
+        free(second_move);
+        return;
+    }
+
+    assign_possible_move(possible_moves, second_move, current_index);
 }
