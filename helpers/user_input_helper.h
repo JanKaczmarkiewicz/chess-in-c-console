@@ -64,7 +64,7 @@ Coordinates *get_user_move(Side side) {
         if (!(x < 0 || y < 0))
             return Coordinates_p(x, y);
 
-        printf("Please enter valid command\n");
+        printf("Please enter valid command\a\n");
     }
 }
 

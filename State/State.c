@@ -69,20 +69,18 @@ void State_perform_action(State *self, Coordinates *coordinates) {
     if (!is_tile_exist(coordinates)) return;
 
     Coordinates **possible_moves = State_selected_chessman_possible_moves(self);
-    bool is_second_phase = is_in_possible_moves(possible_moves, coordinates);
+    bool is_move_phase = is_in_possible_moves(possible_moves, coordinates);
     free_possible_moves(possible_moves);
 
     if (Coordinates_is_same_cord(self->selected_tile, coordinates))
         return;
 
-
-    if (is_second_phase) {
+    if (is_move_phase) {
         self->board[coordinates->y][coordinates->x] = State_get_tile(self, self->selected_tile);
         self->board[self->selected_tile->y][self->selected_tile->x] = NULL;
         free(self->selected_tile);
         self->selected_tile = NULL;
         self->current_side = self->current_side == WHITE ? BLACK : WHITE;
-
         return;
     }
 
@@ -99,9 +97,9 @@ get_tile_code(int subrow, char *background_color, char *frame_color, char *conte
     char *result=malloc(sizeof(char) * 70);
     Subrow subrow_content = frame_color == NULL ? SIMPLE : FRAME;
 
-    if(frame_color == NULL){
+    if(frame_color == NULL)
         frame_color="";
-    }
+
 
     strcat(result, background_color);
     strcat(result, frame_color);
@@ -146,7 +144,7 @@ void State_print_board(State *self) {
                     !State_is_tile_empty(self, current_cords) && is_current_tile_in_possible_moves;
 
             char *background_color =
-                    (current_cords->x - current_cords->y) % 2 == 0 ? WHITE_BACKGROUND : YELLOW_BACKGROUND;
+                    (current_cords->x - current_cords->y) % 2 == 0 ? WHITE_BACKGROUND : GREY_BACKGROUND;
             char *frame_color = get_frame_color(is_current_tile_selected, is_current_tile_in_possible_moves,
                                                is_current_tile_possible_capture);
             char *content = Chessman_character(State_get_tile(self, current_cords));
