@@ -51,20 +51,21 @@ short translate_second_move_character(char c) {
 }
 
 Coordinates *get_user_move(Side side) {
-    char input[2];
-    printf("Please select %s chessman by command [a-g][1-8]:", side == WHITE ? "white" : "black");
+    while (true) {
+        char input[2];
+        printf("Please select %s chessman by command [a-g][1-8]:", side == WHITE ? "white" : "black");
 
-    fgets(input, 3, stdin);
+        fgets(input, 3, stdin);
+        fflush(stdin);
 
-    short x = translate_first_move_character(input[0]);
-    short y = translate_second_move_character(input[1]);
+        short x = translate_first_move_character(input[0]);
+        short y = translate_second_move_character(input[1]);
 
-    if (x < 0 || y < 0) {
+        if (!(x < 0 || y < 0))
+            return Coordinates_p(x, y);
+
         printf("Please enter valid command\n");
-        return NULL;
     }
-
-    return Coordinates_p(x, y);
 }
 
 #endif //USER_INPUT_HELPER_H
