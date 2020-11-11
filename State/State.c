@@ -2,12 +2,14 @@
 
 Subrow SIMPLE = {
         .top="       ",
-        .middle="   %s   ",
+        .left="   ",
+        .right="   ",
         .down="       "};
 Subrow FRAME = {
-        .top="┌─────┐",
-        .middle="│  %s  │",
-        .down="└─────┘"};
+        .top="╔═════╗",
+        .left="║  ",
+        .right="  ║",
+        .down="╚═════╝"};
 
 State State_value_initial() {
     State state = {
@@ -70,9 +72,9 @@ void State_perform_action(State *self, Coordinates *coordinates) {
     bool is_second_phase = is_in_possible_moves(possible_moves, coordinates);
     free_possible_moves(possible_moves);
 
-    if (Coordinates_is_same_cord(self->selected_tile, coordinates)) {
+    if (Coordinates_is_same_cord(self->selected_tile, coordinates))
         return;
-    }
+
 
     if (is_second_phase) {
         self->board[coordinates->y][coordinates->x] = State_get_tile(self, self->selected_tile);
@@ -93,35 +95,41 @@ void State_perform_action(State *self, Coordinates *coordinates) {
 
 
 char *
-get_tile_code(int subrow, char *background_color, bool is_selected_tile, bool is_possible_move_tile,
-              bool is_possible_capture_tile) {
-    char result[100] = "";
-    Subrow subrow_content;
+get_tile_code(int subrow, char *background_color, char *frame_color, char *content) {
+    char *result=malloc(sizeof(char) * 70);
+    Subrow subrow_content = frame_color == NULL ? SIMPLE : FRAME;
+
+    if(frame_color == NULL){
+        frame_color="";
+    }
 
     strcat(result, background_color);
-
-    if (is_possible_capture_tile || is_selected_tile || is_possible_move_tile) {
-        if (is_possible_capture_tile)
-            strcat(result, RED_TEXT);
-        else if (is_selected_tile)
-            strcat(result, BLUE_TEXT);
-        else if (is_possible_move_tile)
-            strcat(result, GREEN_TEXT);
-        subrow_content = FRAME;
-    } else
-        subrow_content = SIMPLE;
+    strcat(result, frame_color);
 
     if (subrow == 0)
         strcat(result, subrow_content.top);
-    else if (subrow == 1)
-        strcat(result, subrow_content.middle);
+    else if (subrow == 1){
+        strcat(result, subrow_content.left);
+        strcat(result, content);
+        strcat(result, frame_color);
+        strcat(result, subrow_content.right);
+    }
     else if (subrow == 2)
         strcat(result, subrow_content.down);
 
-    strcat(result, CLEAR_TEXT);
     strcat(result, CLEAR_BACKGROUND);
 
     return result;
+}
+
+char *get_frame_color(bool is_selected, bool is_possible_move, bool is_possible_capture) {
+    if (is_selected)
+        return BLUE_TEXT;
+    if (is_possible_capture)
+        return RED_TEXT;
+    if (is_possible_move)
+        return GREEN_TEXT;
+    return NULL;
 }
 
 void State_print_board(State *self) {
@@ -139,11 +147,13 @@ void State_print_board(State *self) {
 
             char *background_color =
                     (current_cords->x - current_cords->y) % 2 == 0 ? WHITE_BACKGROUND : YELLOW_BACKGROUND;
+            char *frame_color = get_frame_color(is_current_tile_selected, is_current_tile_in_possible_moves,
+                                               is_current_tile_possible_capture);
             char *content = Chessman_character(State_get_tile(self, current_cords));
-            char *tile_subrow = get_tile_code(subrow % NUMBER_OF_SUBROWS, background_color, is_current_tile_selected,
-                                              is_current_tile_in_possible_moves, is_current_tile_possible_capture);
 
-            printf(tile_subrow, content);
+            char *tile_subrow = get_tile_code(subrow % NUMBER_OF_SUBROWS, background_color, frame_color, content);
+
+            printf(tile_subrow);
             free(current_cords);
         }
 

@@ -33,7 +33,8 @@
 
 typedef struct {
     char *top;
-    char *middle;
+    char *left;
+    char *right;
     char *down;
 } Subrow;
 
