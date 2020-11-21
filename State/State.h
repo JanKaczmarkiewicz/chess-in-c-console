@@ -1,37 +1,9 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include <stdio.h>
-#include <math.h>
-#include <stdbool.h>
-#include <string.h>
-#include <stdlib.h>
 #include "../constants.h"
+#include "../Chessman/Chessman.h"
 #include "../Coordinates/Coordinates.h"
-
-
-typedef enum{
-    WHITE,
-    BLACK,
-} Side;
-
-typedef enum {
-    KING,
-    QUEEN,
-    PAWN,
-    CASTLE,
-    KNIGHT,
-    BISHOP,
-} ChessmanType;
-
-typedef struct Chessman {
-    ChessmanType type;
-    Side side;
-} Chessman;
-
-Chessman *Chessman_p(Side side, ChessmanType type);
-
-char *Chessman_character(Chessman *self);
 
 typedef struct {
     Side current_side;

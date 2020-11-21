@@ -8,7 +8,7 @@
 
 void free_possible_moves(Coordinates **possible_moves);
 
-void assign_possible_move(Coordinates **possible_moves, Coordinates *coordinates,short *current_index);
+void assign_possible_move(Coordinates **possible_moves, Coordinates *coordinates, short *current_index);
 
 void assign_direction_moves(State *state, Coordinates *coordinates, Coordinates **possible_moves, short *current_index,
                             Direction direction);

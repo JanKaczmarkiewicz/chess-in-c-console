@@ -23,11 +23,4 @@
 #define WHITE_CHESSMAN_COLOR(chessman_code) BLACK_TEXT""chessman_code""CLEAR_TEXT
 #define BLACK_CHESSMAN_COLOR(chessman_code) BLACK_TEXT""chessman_code""CLEAR_TEXT
 
-typedef struct {
-    char *top;
-    char *left;
-    char *right;
-    char *down;
-} Subrow;
-
 #endif //CONSTANTS_H

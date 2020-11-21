@@ -1,6 +1,7 @@
 #ifndef USER_INPUT_HELPER_H
 #define USER_INPUT_HELPER_H
 
+#include <stdio.h>
 #include "../Coordinates/Coordinates.h"
 #include "../State/State.h"
 

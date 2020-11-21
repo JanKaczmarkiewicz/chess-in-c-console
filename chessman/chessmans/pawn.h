@@ -1,7 +1,5 @@
-#include "stdbool.h"
 #include "../../State/State.h"
 #include "../../Coordinates/Coordinates.h"
-#include "../../helpers/possible_moves_helper.h"
 
 #ifndef PAWN_H
 #define PAWN_H

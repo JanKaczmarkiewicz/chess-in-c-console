@@ -1,10 +1,12 @@
+#include "stdlib.h"
+
 #include "possible_moves_helper.h"
 
-#include "../chessman/chessmans/bishop.h"
-#include "../chessman/chessmans/castle.h"
-#include "../chessman/chessmans/knight.h"
-#include "../chessman/chessmans/pawn.h"
-#include "../chessman/chessmans/queen.h"
+#include "../Chessman/chessmans/bishop.h"
+#include "../Chessman/chessmans/castle.h"
+#include "../Chessman/chessmans/knight.h"
+#include "../Chessman/chessmans/pawn.h"
+#include "../Chessman/chessmans/queen.h"
 
 void free_possible_moves(Coordinates **possible_moves) {
     if (possible_moves == NULL) return;

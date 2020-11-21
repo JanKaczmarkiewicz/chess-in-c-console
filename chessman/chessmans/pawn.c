@@ -1,4 +1,6 @@
 #include "pawn.h"
+#include "stdlib.h"
+#include "../../helpers/possible_moves_helper.h"
 
 const short WHITE_PAWN_SPECIAL_ROW = 6;
 const short BLACK_PAWN_SPECIAL_ROW = 1;

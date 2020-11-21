@@ -1,15 +1,13 @@
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+#include <stdlib.h>
 #include "../helpers/possible_moves_helper.h"
+#include "../helpers/display_tile_helper.h"
 
-Subrow SIMPLE = {
-        .top="       ",
-        .left="   ",
-        .right="   ",
-        .down="       "};
-Subrow FRAME = {
-        .top="╔═════╗",
-        .left="║  ",
-        .right="  ║",
-        .down="╚═════╝"};
+bool is_tile_exist(Coordinates *coordinates) {
+    return coordinates->x >= 0 && coordinates->x < BOARD_SIZE && coordinates->y >= 0 && coordinates->y < BOARD_SIZE;
+}
 
 State State_value_initial() {
     State state = {
@@ -31,10 +29,6 @@ State State_value_initial() {
     return state;
 }
 
-bool is_tile_exist(Coordinates *coordinates) {
-    return coordinates->x >= 0 && coordinates->x < BOARD_SIZE && coordinates->y >= 0 && coordinates->y < BOARD_SIZE;
-}
-
 Chessman *State_get_tile(State *self, Coordinates *coordinates) {
     return self->board[coordinates->y][coordinates->x];
 }
@@ -47,17 +41,16 @@ bool State_is_any_selected_tile(State *self) {
     return self->selected_tile != NULL;
 }
 
+bool State_is_selected_tile(State *self, Coordinates *coordinates) {
+    if (!State_is_any_selected_tile(self)) return false;
+    return Coordinates_is_same_cord(self->selected_tile, coordinates);
+}
+
 bool State_is_possible_move(State *self, Coordinates *coordinates, Side chessman_side) {
     if (!is_tile_exist(coordinates)) return false;
     if (State_is_tile_empty(self, coordinates)) return true;
     if (State_get_tile(self, coordinates)->side != chessman_side) return true;
     return false;
-}
-
-bool State_is_selected_tile(State *self, Coordinates *coordinates) {
-    if (!State_is_any_selected_tile(self)) return false;
-    return Coordinates_is_same_cord(self->selected_tile, coordinates);
-
 }
 
 Coordinates **State_selected_chessman_possible_moves(State *self) {
@@ -91,45 +84,6 @@ void State_perform_action(State *self, Coordinates *coordinates) {
     self->selected_tile = Coordinates_p(coordinates->x, coordinates->y);
 }
 
-
-char *
-get_tile_code(int subrow, char *background_color, char *frame_color, char *content) {
-    char *result=malloc(sizeof(char) * 70);
-    Subrow subrow_content = frame_color == NULL ? SIMPLE : FRAME;
-
-    if(frame_color == NULL)
-        frame_color="";
-
-
-    strcat(result, background_color);
-    strcat(result, frame_color);
-
-    if (subrow == 0)
-        strcat(result, subrow_content.top);
-    else if (subrow == 1){
-        strcat(result, subrow_content.left);
-        strcat(result, content);
-        strcat(result, frame_color);
-        strcat(result, subrow_content.right);
-    }
-    else if (subrow == 2)
-        strcat(result, subrow_content.down);
-
-    strcat(result, CLEAR_BACKGROUND);
-
-    return result;
-}
-
-char *get_frame_color(bool is_selected, bool is_possible_move, bool is_possible_capture) {
-    if (is_selected)
-        return BLUE_TEXT;
-    if (is_possible_capture)
-        return RED_TEXT;
-    if (is_possible_move)
-        return GREEN_TEXT;
-    return NULL;
-}
-
 void State_print_board(State *self) {
     Coordinates **possible_moves = State_selected_chessman_possible_moves(self);
 
@@ -143,64 +97,18 @@ void State_print_board(State *self) {
             bool is_current_tile_possible_capture =
                     !State_is_tile_empty(self, current_cords) && is_current_tile_in_possible_moves;
 
-            char *background_color =
-                    (current_cords->x - current_cords->y) % 2 == 0 ? WHITE_BACKGROUND : GREY_BACKGROUND;
+            char *background_color = get_background_color(current_cords);
             char *frame_color = get_frame_color(is_current_tile_selected, is_current_tile_in_possible_moves,
-                                               is_current_tile_possible_capture);
+                                                is_current_tile_possible_capture);
             char *content = Chessman_character(State_get_tile(self, current_cords));
 
             char *tile_subrow = get_tile_code(subrow % NUMBER_OF_SUBROWS, background_color, frame_color, content);
 
-            printf(tile_subrow);
+            printf("%s", tile_subrow);
             free(current_cords);
         }
 
         printf("\n");
     }
     free_possible_moves(possible_moves);
-}
-
-Chessman *Chessman_p(Side side, ChessmanType type) {
-    Chessman *p = malloc(sizeof(Chessman));
-    p->side = side;
-    p->type = type;
-    return p;
-}
-
-char *Chessman_character(Chessman *self) {
-    if (self == NULL) return " ";
-    switch (self->side) {
-        case WHITE:
-            switch (self->type) {
-                case KING:
-                    return WHITE_CHESSMAN_COLOR("\u2654");
-                case QUEEN:
-                    return WHITE_CHESSMAN_COLOR("\u2655");
-                case PAWN:
-                    return WHITE_CHESSMAN_COLOR("\u2659");
-                case KNIGHT:
-                    return WHITE_CHESSMAN_COLOR("\u2658");
-                case CASTLE:
-                    return WHITE_CHESSMAN_COLOR("\u2656");
-                case BISHOP:
-                    return WHITE_CHESSMAN_COLOR("\u2657");
-            }
-
-        case BLACK:
-            switch (self->type) {
-                case KING:
-                    return BLACK_CHESSMAN_COLOR("\u265A");
-                case QUEEN:
-                    return BLACK_CHESSMAN_COLOR("\u265B");
-                case PAWN:
-                    return BLACK_CHESSMAN_COLOR("\u265F");
-                case KNIGHT:
-                    return BLACK_CHESSMAN_COLOR("\u265E");
-                case CASTLE:
-                    return BLACK_CHESSMAN_COLOR("\u265C");
-                case BISHOP:
-                    return BLACK_CHESSMAN_COLOR("\u265D");
-            }
-    }
-
 }
