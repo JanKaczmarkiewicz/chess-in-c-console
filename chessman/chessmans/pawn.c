@@ -12,29 +12,34 @@ void assign_pawn_possible_moves(State *state, Coordinates *coordinates, Coordina
     Side pawn_side = State_get_tile(state, coordinates)->side;
 
     bool is_pawn_white = pawn_side == WHITE;
+    bool is_pawn_on_current_side = state->current_side == pawn_side;
 
     Direction pawn_direction = is_pawn_white ? UP : DOWN;
     Direction pawn_capture_directions[PAWN_CAPTURE_DIRECTIONS_NUMBER] = {is_pawn_white ? UP_LEFT : DOWN_LEFT,
                                                                          is_pawn_white ? UP_RIGHT : DOWN_RIGHT};
 
-    short special_row = is_pawn_white ? WHITE_PAWN_SPECIAL_ROW : BLACK_PAWN_SPECIAL_ROW;
-
     //capture possible moves
     for (int i = 0; i < PAWN_CAPTURE_DIRECTIONS_NUMBER; i++) {
 
         Coordinates *capture_move = Coordinates_p(
-                coordinates->y + get_direction_next_y_modificator(pawn_capture_directions[i]),
-                coordinates->x + get_direction_next_x_modificator(pawn_capture_directions[i])
+                coordinates->x + get_direction_next_x_modificator(pawn_capture_directions[i]),
+                coordinates->y + get_direction_next_y_modificator(pawn_capture_directions[i])
         );
 
-        if (!is_tile_exist(capture_move) || State_is_tile_empty(state, capture_move) ||
-            State_get_tile(state, capture_move)->side == pawn_side){
-            free(capture_move);
-            continue;
+
+        if (is_tile_exist(capture_move)) {
+            bool is_enemy =
+                    !State_is_tile_empty(state, capture_move) && State_get_tile(state, capture_move)->side != pawn_side;
+            if (!is_pawn_on_current_side || is_enemy) {
+                assign_possible_move(possible_moves, capture_move, current_index);
+                continue;
+            }
         }
 
-        assign_possible_move(possible_moves, capture_move, current_index);
+        free(capture_move);
     }
+
+    if (!is_pawn_on_current_side) return;
 
     //first possible move
     Coordinates *first_move = Coordinates_p(
@@ -54,6 +59,8 @@ void assign_pawn_possible_moves(State *state, Coordinates *coordinates, Coordina
             coordinates->x + 2 * get_direction_next_x_modificator(pawn_direction),
             coordinates->y + 2 * get_direction_next_y_modificator(pawn_direction)
     );
+
+    short special_row = is_pawn_white ? WHITE_PAWN_SPECIAL_ROW : BLACK_PAWN_SPECIAL_ROW;
 
     if (!is_tile_exist(second_move) || special_row != coordinates->y || !State_is_tile_empty(state, second_move)) {
         free(second_move);
