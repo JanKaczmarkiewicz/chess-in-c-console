@@ -7,6 +7,7 @@
 #include "../Chessman/chessmans/knight.h"
 #include "../Chessman/chessmans/pawn.h"
 #include "../Chessman/chessmans/queen.h"
+#include "../Chessman/chessmans/king.h"
 
 void free_possible_moves(Coordinates **possible_moves) {
     if (possible_moves == NULL) return;
@@ -49,39 +50,46 @@ void assign_direction_moves(State *state, Coordinates *coordinates, Coordinates 
     }
 }
 
+void assign_chessman_possible_moves(State *state, Coordinates *coordinates, Coordinates **possible_moves,
+                                    short *current_index){
+    switch (State_get_tile(state, coordinates)->type) {
+        case KING:
+            assign_king_possible_moves(state, coordinates, possible_moves, current_index);
+            break;
+
+        case QUEEN:
+            assign_queen_possible_moves(state, coordinates, possible_moves, current_index);
+            break;
+
+        case PAWN:
+            assign_pawn_possible_moves(state, coordinates, possible_moves, current_index);
+            break;
+
+        case KNIGHT:
+            assign_knight_possible_moves(state, coordinates, possible_moves, current_index);
+            break;
+
+        case CASTLE:
+            assign_castle_possible_moves(state, coordinates, possible_moves, current_index);
+            break;
+
+        case BISHOP:
+            assign_bishop_possible_moves(state, coordinates, possible_moves, current_index);
+            break;
+    }
+}
+
 Coordinates **get_possible_moves(State *state, Coordinates *coordinates) {
     if (State_is_tile_empty(state, coordinates)) return NULL;
 
     short current_index = -1;
     Coordinates **possible_moves = malloc(MAX_MOVES_NUMBER * sizeof(Coordinates *));
 
-    switch (State_get_tile(state, coordinates)->type) {
-        case KING:
-            //assign_king_possible_moves(state, coordinates, possible_moves, &current_index);
-            break;
+    assign_chessman_possible_moves(state, coordinates, possible_moves, &current_index);
 
-        case QUEEN:
-            assign_queen_possible_moves(state, coordinates, possible_moves, &current_index);
-            break;
-
-        case PAWN:
-            assign_pawn_possible_moves(state, coordinates, possible_moves, &current_index);
-            break;
-
-        case KNIGHT:
-            assign_knight_possible_moves(state, coordinates, possible_moves, &current_index);
-            break;
-
-        case CASTLE:
-            assign_castle_possible_moves(state, coordinates, possible_moves, &current_index);
-            break;
-
-        case BISHOP:
-            assign_bishop_possible_moves(state, coordinates, possible_moves, &current_index);
-            break;
+    if (current_index < 0){
+        return NULL;
     }
-
-    if (current_index < 0) return NULL;
 
     assign_possible_move(possible_moves, NULL, &current_index);
     return possible_moves;

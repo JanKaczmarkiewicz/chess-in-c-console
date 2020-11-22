@@ -18,7 +18,7 @@ State State_value_initial() {
                     {Chessman_p(BLACK, CASTLE), Chessman_p(BLACK, KNIGHT), Chessman_p(BLACK, BISHOP), Chessman_p(BLACK, KING), Chessman_p(BLACK, QUEEN), Chessman_p(BLACK,BISHOP), Chessman_p(BLACK, KNIGHT), Chessman_p(BLACK, CASTLE)},
                     {Chessman_p(BLACK, PAWN),   Chessman_p(BLACK, PAWN),   Chessman_p(BLACK, PAWN),   Chessman_p(BLACK, PAWN), Chessman_p(BLACK, PAWN),  Chessman_p(BLACK,PAWN),   Chessman_p(BLACK, PAWN),   Chessman_p(BLACK, PAWN)},
                     {Chessman_p(WHITE, PAWN),   NULL,   NULL,   NULL,  NULL,   NULL,   NULL,   NULL},
-                    {NULL,   NULL,   NULL,   NULL,  NULL,   NULL,   NULL,   NULL},
+                    {NULL,   NULL,   NULL,   NULL,  Chessman_p(WHITE, KING),   Chessman_p(WHITE, PAWN),   NULL,   NULL},
                     {NULL,   NULL,   NULL,   NULL,  NULL,   NULL,   NULL,   NULL},
                     {NULL,   NULL,   NULL,   NULL,  NULL,   NULL,   NULL,   NULL},
                     {NULL,   Chessman_p(WHITE, PAWN),   Chessman_p(WHITE, PAWN),   Chessman_p(WHITE, PAWN), Chessman_p(WHITE, PAWN),  Chessman_p(WHITE,PAWN),   Chessman_p(WHITE, PAWN),   Chessman_p(WHITE, PAWN),},

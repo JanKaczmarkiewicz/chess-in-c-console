@@ -13,6 +13,9 @@ void assign_possible_move(Coordinates **possible_moves, Coordinates *coordinates
 void assign_direction_moves(State *state, Coordinates *coordinates, Coordinates **possible_moves, short *current_index,
                             Direction direction);
 
+void assign_chessman_possible_moves(State *state, Coordinates *coordinates, Coordinates **possible_moves,
+                                    short *current_index);
+
 Coordinates **get_possible_moves(State *state, Coordinates *coordinates);
 
 bool is_in_possible_moves(Coordinates **possible_moves, Coordinates *coordinates);
